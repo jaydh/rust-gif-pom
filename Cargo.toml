@@ -1,0 +1,15 @@
+[target.'cfg(target_arch = "aarch64")']
+[target.'cfg(target_os = "macos")']
+[target.'cfg(target_vendor = "apple")']
+
+[package]
+name = "rusty-gifs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.80"
+chrono = "0.4.34"
+core-graphics = "0.23.1"
+druid = { version = "0.8.3", features= ["image-all"] }
+image = "0.24.9"
