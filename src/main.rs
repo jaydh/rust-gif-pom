@@ -36,6 +36,7 @@ impl Clone for LocalDateTime {
 pub struct AppState {
     start_time: Option<LocalDateTime>,
     started: bool,
+    ended: bool,
 }
 
 fn main() {
@@ -44,6 +45,7 @@ fn main() {
     let state = AppState {
         start_time: None,
         started: false,
+        ended: false,
     };
 
     AppLauncher::with_window(window)
@@ -55,16 +57,19 @@ fn build_root_widget() -> impl Widget<AppState> {
     let clock = DigitalClock::new();
     let anim = GifWidget::new();
 
-    let start_stop_button = Button::new(|a: &AppState, _: &Env| match a.started {
-        true => "Stop",
-        false => "Start",
+    let start_stop_button = Button::new(|a: &AppState, _: &Env| match (a.started, a.ended) {
+        (true, false) => "Stop",
+        (true, true) => "Restart",
+        _ => "Start",
     })
-    .on_click(|_ctx, a: &mut AppState, _env| match a.started {
-        true => {
+    .on_click(|_ctx, a: &mut AppState, _env| match (a.started, a.ended) {
+        (true, false) => {
             a.started = false;
+            a.ended = false
         }
-        false => {
+        _ => {
             a.started = true;
+            a.ended = false;
             a.start_time = Some(LocalDateTime(Local::now()));
         }
     });

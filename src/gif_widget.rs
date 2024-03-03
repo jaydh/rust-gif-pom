@@ -24,18 +24,19 @@ pub struct GifWidget {
 
 impl GifWidget {
     pub fn new() -> Self {
-        let gif_map: HashMap<String, GifData> = vec!["src/squirtle-sax.gif", "src/thinking.gif"]
-            .iter()
-            .map(|key| {
-                (
-                    key.to_string(),
-                    GifData {
-                        data: load_gif(key).unwrap(),
-                        dimensions: image_dimensions(key).unwrap(),
-                    },
-                )
-            })
-            .collect();
+        let gif_map: HashMap<String, GifData> =
+            vec!["src/squirtle-sax.gif", "src/thinking.gif", "src/done.gif"]
+                .iter()
+                .map(|key| {
+                    (
+                        key.to_string(),
+                        GifData {
+                            data: load_gif(key).unwrap(),
+                            dimensions: image_dimensions(key).unwrap(),
+                        },
+                    )
+                })
+                .collect();
 
         GifWidget {
             start_time: SystemTime::now(),
@@ -91,9 +92,10 @@ impl Widget<AppState> for GifWidget {
     }
 
     fn paint(&mut self, ctx: &mut PaintCtx, app_data: &AppState, _env: &Env) {
-        let gif_data = match app_data.started {
-            true => self.gif_map.get("src/thinking.gif").unwrap(),
-            false => self.gif_map.get("src/squirtle-sax.gif").unwrap(),
+        let gif_data = match (app_data.started, app_data.ended) {
+            (true, true) => self.gif_map.get("src/done.gif").unwrap(),
+            (true, false) => self.gif_map.get("src/thinking.gif").unwrap(),
+            _ => self.gif_map.get("src/squirtle-sax.gif").unwrap(),
         };
         let vec_size = gif_data.data.len();
         let time_since = SystemTime::now()
