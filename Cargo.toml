@@ -9,3 +9,8 @@ chrono = "0.4.34"
 druid = { version = "0.8.3", features= ["image-all"] }
 gdk-pixbuf = "0.19.2"
 image = "0.24.9"
+
+[workspace.metadata.cross.target.armv7-unknown-linux-gnueabihf]
+pre-build = [
+    "apt-get update && apt-get --assume-yes install libgtk-3-dev libcairo1-dev libpango-1.0-0 gobject-introspection libglib2.0-dev"
+]
