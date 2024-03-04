@@ -65,7 +65,8 @@ fn build_root_widget() -> impl Widget<AppState> {
     .on_click(|_ctx, a: &mut AppState, _env| match (a.started, a.ended) {
         (true, false) => {
             a.started = false;
-            a.ended = false
+            a.ended = false;
+            a.start_time = None;
         }
         _ => {
             a.started = true;
